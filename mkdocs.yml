@@ -44,6 +44,7 @@ theme:
 nav:
   - Home: index.md
   - User guide: user_guide.md
+  - Equations: equation.md
 
 extra:
   social:
@@ -99,3 +100,4 @@ plugins:
           nav_translations:
             Home: ホーム
             User guide: ユーザーガイド
+            Equations: 式体系
