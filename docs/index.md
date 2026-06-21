@@ -4,7 +4,7 @@ icon: material/home
 
 # PSMpy
 
-**PSMpy** is a Pythonic rebuild of the GAMS `PowerSystemModel` as a
+**PSMpy v0.1** is a Pythonic rebuild of the GAMS `PowerSystemModel` as a
 [GAMSpy](https://gamspy.readthedocs.io/) model — a multi-year linear program for
 capacity-expansion and dispatch optimization of energy systems. The energy
 system is expressed with fixed physical element types — **Source / Conversion /
