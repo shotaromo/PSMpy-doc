@@ -402,8 +402,8 @@ $$
 | ------------------------ | ------------- | --------------------------------- | ---- |
 | $\lambda^{\min}_{n,i,r}$ | `gsmn(N,I,R)` | Minimum installed capacity        | GW   |
 | $\lambda^{\max}_{n,i,r}$ | `gsmx(N,I,R)` | Maximum installed capacity        | GW   |
-| $\nu^{\min}_{n,i,r}$     | `grmn(N,I,R)` | Minimum new installation per year | GW   |
-| $\nu^{\max}_{n,i,r}$     | `grmx(N,I,R)` | Maximum new installation per year | GW   |
+| $\nu^{\min}_{n,i,r}$     | `grmn(N,I,R)` | Minimum new installation per year | GW/yr   |
+| $\nu^{\max}_{n,i,r}$     | `grmx(N,I,R)` | Maximum new installation per year | GW/yr   |
 
 </details>
 
@@ -489,8 +489,8 @@ $$
 | -------------------- | --------- | --------------------------------- | ---- |
 | $\lambda^{\min}_{l}$ | `fsmn(L)` | Minimum link capacity             | GW   |
 | $\lambda^{\max}_{l}$ | `fsmx(L)` | Maximum link capacity             | GW   |
-| $\nu^{\min}_{l}$     | `frmn(L)` | Minimum new installation per year | GW   |
-| $\nu^{\max}_{l}$     | `frmx(L)` | Maximum new installation per year | GW   |
+| $\nu^{\min}_{l}$     | `frmn(L)` | Minimum new installation per year | GW/yr   |
+| $\nu^{\max}_{l}$     | `frmx(L)` | Maximum new installation per year | GW/yr   |
 
 </details>
 
@@ -637,8 +637,8 @@ $$
 | ------------------------ | ------------- | --------------------------------- | ---- |
 | $\lambda^{\min}_{n,i,s}$ | `esmn(N,I,S)` | Minimum installed energy capacity | GWh  |
 | $\lambda^{\max}_{n,i,s}$ | `esmx(N,I,S)` | Maximum installed energy capacity | GWh  |
-| $\nu^{\min}_{n,i,s}$     | `ermn(N,I,S)` | Minimum new installation          | GWh  |
-| $\nu^{\max}_{n,i,s}$     | `ermx(N,I,S)` | Maximum new installation          | GWh  |
+| $\nu^{\min}_{n,i,s}$     | `ermn(N,I,S)` | Minimum new installation          | GWh/yr  |
+| $\nu^{\max}_{n,i,s}$     | `ermx(N,I,S)` | Maximum new installation          | GWh/yr  |
 
 </details>
 

@@ -89,7 +89,7 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
 
 **Sources** *(to be documented by the data team)*
 
-- Hydrogen technologies (electrolysers, SMR ±CCS) are currently parameterised in the **GAMS data layer** (`data/parameter/generator.gms`); their external cost/efficiency source is **not yet documented** in the PSM-Data pipeline.
+- Hydrogen production splits by element type (see [Model structure](structure.md)): **Source**-type routes — SMR, coal-to-H2 (GAMS generators `g*`) — are parameterised in `data/parameter/generator.gms`, while **Conversion**-type **electrolysers** (GAMS links `f*`, `L2.gms` tech `electrolysis`) carry their cost/efficiency (`fcc`/`facc`/`feta`) in `data/parameter/link.gms`. Their external cost/efficiency sources are **not yet documented** in the PSM-Data pipeline.
 
 **Methodology**
 

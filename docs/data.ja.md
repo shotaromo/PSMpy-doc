@@ -87,7 +87,7 @@ icon: material/database
 
 **出典** *(データチームが文書化予定)*
 
-- 水素技術（電解槽・SMR±CCS）は現状 **GAMS データ層**（`data/parameter/generator.gms`）でパラメータ化されており、外部のコスト/効率出典は PSM-Data パイプラインに**未文書化**。
+- 水素製造は要素型で分かれます（[モデル構造](structure.md) 参照）：**Source** 型ルート（SMR・coal-to-H2＝GAMS 発電機 `g*`）は `data/parameter/generator.gms`、**Conversion** 型 **電解槽**（GAMS リンク `f*`、`L2.gms` の技術 `electrolysis`）はコスト/効率（`fcc`/`facc`/`feta`）を `data/parameter/link.gms` に持ちます。外部のコスト/効率出典は PSM-Data パイプラインに**未文書化**。
 
 **設定方法**
 

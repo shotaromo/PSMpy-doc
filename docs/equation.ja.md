@@ -398,8 +398,8 @@ $$
 | ---------- | -------- | ---- | ---- |
 | $\lambda^{\min}_{n,i,r}$ | `gsmn(N,I,R)` | 設置済み容量の下限 | GW |
 | $\lambda^{\max}_{n,i,r}$ | `gsmx(N,I,R)` | 設置済み容量の上限 | GW |
-| $\nu^{\min}_{n,i,r}$ | `grmn(N,I,R)` | 年間新設容量の下限 | GW |
-| $\nu^{\max}_{n,i,r}$ | `grmx(N,I,R)` | 年間新設容量の上限 | GW |
+| $\nu^{\min}_{n,i,r}$ | `grmn(N,I,R)` | 年間新設容量の下限 | GW/yr |
+| $\nu^{\max}_{n,i,r}$ | `grmx(N,I,R)` | 年間新設容量の上限 | GW/yr |
 
 </details>
 
@@ -485,8 +485,8 @@ $$
 | ---------- | -------- | ---- | ---- |
 | $\lambda^{\min}_{l}$ | `fsmn(L)` | リンク容量の下限 | GW |
 | $\lambda^{\max}_{l}$ | `fsmx(L)` | リンク容量の上限 | GW |
-| $\nu^{\min}_{l}$ | `frmn(L)` | 年間新設容量の下限 | GW |
-| $\nu^{\max}_{l}$ | `frmx(L)` | 年間新設容量の上限 | GW |
+| $\nu^{\min}_{l}$ | `frmn(L)` | 年間新設容量の下限 | GW/yr |
+| $\nu^{\max}_{l}$ | `frmx(L)` | 年間新設容量の上限 | GW/yr |
 
 </details>
 
@@ -632,8 +632,8 @@ $$
 | ---------- | -------- | ---- | ---- |
 | $\lambda^{\min}_{n,i,s}$ | `esmn(N,I,S)` | 設置済みエネルギー容量の下限 | GWh |
 | $\lambda^{\max}_{n,i,s}$ | `esmx(N,I,S)` | 設置済みエネルギー容量の上限 | GWh |
-| $\nu^{\min}_{n,i,s}$ | `ermn(N,I,S)` | 新設容量の下限 | GWh |
-| $\nu^{\max}_{n,i,s}$ | `ermx(N,I,S)` | 新設容量の上限 | GWh |
+| $\nu^{\min}_{n,i,s}$ | `ermn(N,I,S)` | 新設容量の下限 | GWh/yr |
+| $\nu^{\max}_{n,i,s}$ | `ermx(N,I,S)` | 新設容量の上限 | GWh/yr |
 
 </details>
 
