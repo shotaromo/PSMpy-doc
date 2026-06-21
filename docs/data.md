@@ -21,10 +21,10 @@ This page documents the data assumptions underlying each sector, covering cost a
     and efficiencies for each generation technology (e.g., coal, gas, solar, wind, nuclear).
     Include the base year, any learning curves applied, and regional differentiation if applicable.
 
-**Sources**
+**Sources** *(datasets the PSM-Data pipeline draws on; specific values, base year, and methodology to be finalized by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- **IEA World Energy Outlook (WEO 2023)** — overnight capital and fixed/variable O&M cost by technology (`prog/inc_prog/power_cost.R`).
+- **DEA Technology Catalogue** — efficiency / heat-technology parameters for selected technologies.
 
 **Methodology**
 
@@ -43,10 +43,10 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
     Cover the geographic scope, data sources (e.g., reanalysis data, GIS), and how the
     capacity factor profiles (`gmx`) were derived from resource data.
 
-**Sources**
+**Sources** *(datasets the PSM-Data pipeline draws on; processing details to be finalized by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- **Reanalysis-derived gridded capacity factors** (NetCDF) — hourly solar-PV and wind capacity-factor profiles feeding `gmx(N,I,R,T)` (`prog/inc_prog/potential.R`).
+- **Franzmann et al. (2025)** renewable resource/plant dataset + PV/wind **resource-grade curves** — siting potential and per-grade capacity limits.
 
 **Methodology**
 
@@ -63,10 +63,10 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
     Cover the data sources for historical installation records, the survival function used
     to compute surviving vintage stock `gssc(N,I,R,Y)`, and any adjustments made.
 
-**Sources**
+**Sources** *(datasets the PSM-Data pipeline draws on; survival function + calibration to be finalized by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- **IEA Energy Balances** (`ieaeb`) — historical generation/capacity by technology (`prog/inc_prog/plants.R`).
+- Per-technology **capacity datasets** (renewable / hydro / geothermal) combined with **survival functions** to build the surviving vintage stock `gssc(N,I,R,Y)`.
 
 **Methodology**
 
@@ -87,10 +87,9 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
     (e.g., electrolysers, SMR with/without CCS).
     Include capital costs, fixed O&M, and conversion efficiencies (`geta` or `feta`).
 
-**Sources**
+**Sources** *(to be documented by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- Hydrogen technologies (electrolysers, SMR ±CCS) are currently parameterised in the **GAMS data layer** (`data/parameter/generator.gms`); their external cost/efficiency source is **not yet documented** in the PSM-Data pipeline.
 
 **Methodology**
 
@@ -108,10 +107,9 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
     Describe any constraints on hydrogen production potential, such as limits on
     renewable electricity available for electrolysis or geological storage capacity.
 
-**Sources**
+**Sources** *(to be documented by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- Production/storage constraints are set in the **GAMS data / scenario layer**; specific sources are **not yet documented**.
 
 **Methodology**
 
@@ -127,10 +125,9 @@ For the full list of cost and efficiency parameters and their GAMS names, see th
     Describe how existing hydrogen production capacity was estimated,
     including data sources and vintage stock construction.
 
-**Sources**
+**Sources** *(to be documented by the data team)*
 
-- *(source 1)*
-- *(source 2)*
+- Existing hydrogen production capacity is generally **negligible at the base year**; where present, vintage stock follows the same survival-function construction as the power sector. **To be confirmed.**
 
 **Methodology**
 
