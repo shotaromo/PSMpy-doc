@@ -190,21 +190,21 @@ $$
 | Variable                        | Symbol             | Description                                  | Unit        |
 | ------------------------------- | ------------------ | -------------------------------------------- | ----------- |
 | $VTC$                           | `VTC`              | Total system cost to be minimized            | million USD |
-| $VR_{n,i,r}$                    | `VGR(N,I,R)`       | New installation of generator                | GW          |
+| $VR_{n,i,r}$                    | `VGR(N,I,R)`       | New installation of generator                | GW/yr          |
 | $VS_{n,i,r}$                    | `VGS(N,I,R)`       | Installed capacity of generator              | GW          |
 | $VC_{n,i,r_0,r_1,y}$            | `VGC(N,I,R0,R1,Y)` | Retrofit flow between generator technologies | GW          |
-| $VP_{n,i,r}$                    | `VGP(N,I,R)`       | Replacement capacity of generator            | GW          |
+| $VP_{n,i,r}$                    | `VGP(N,I,R)`       | Replacement capacity of generator            | GW/yr          |
 | $VX_{n,i,r,t}$                  | `VG(N,I,R,T)`      | Power output of generator                    | GW          |
-| $VR_{l}$                        | `VFR(L)`           | New installation of link                     | GW          |
+| $VR_{l}$                        | `VFR(L)`           | New installation of link                     | GW/yr          |
 | $VS_{l}$                        | `VFS(L)`           | Installed capacity of link                   | GW          |
 | $VC_{l_0,l_1,y}$                | `VFC(L0,L1,Y)`     | Retrofit flow between links                  | GW          |
-| $VP_{l}$                        | `VFP(L)`           | Replacement capacity of link                 | GW          |
+| $VP_{l}$                        | `VFP(L)`           | Replacement capacity of link                 | GW/yr          |
 | $VX^{+}_{l,t}$                  | `VFF(L,T)`         | Forward energy flow via link                 | GW          |
 | $VX^{-}_{l,t}$                  | `VFB(L,T)`         | Backward energy flow via link                | GW          |
-| $VR_{n,i,s}$                    | `VER(N,I,S)`       | New installation of storage                  | GWh         |
+| $VR_{n,i,s}$                    | `VER(N,I,S)`       | New installation of storage                  | GWh/yr         |
 | $VS_{n,i,s}$                    | `VES(N,I,S)`       | Installed energy capacity of storage         | GWh         |
 | $VC_{n,i,s_0,s_1,y}$            | `VEC(N,I,S0,S1,Y)` | Retrofit flow between storage technologies   | GWh         |
-| $VP_{n,i,s}$                    | `VEP(N,I,S)`       | Replacement capacity of storage              | GWh         |
+| $VP_{n,i,s}$                    | `VEP(N,I,S)`       | Replacement capacity of storage              | GWh/yr         |
 | $\delta^{\text{stock}}_{n,i,r}$ | `RES_GSCB(N,I,R)`  | Slack variable for generator stock balance   | GW          |
 | $\delta^{\text{stock}}_{l}$     | `RES_FSCB(L)`      | Slack variable for link stock balance        | GW          |
 | $\delta^{\text{stock}}_{n,i,s}$ | `RES_ESCB(N,I,S)`  | Slack variable for storage stock balance     | GWh         |
@@ -408,7 +408,7 @@ $$
 | Variable     | Symbol       | Description                     | Unit |
 | ------------ | ------------ | ------------------------------- | ---- |
 | $VS_{n,i,r}$ | `VGS(N,I,R)` | Installed capacity of generator | GW   |
-| $VR_{n,i,r}$ | `VGR(N,I,R)` | New installation of generator   | GW   |
+| $VR_{n,i,r}$ | `VGR(N,I,R)` | New installation of generator   | GW/yr   |
 
 </details>
 
@@ -495,7 +495,7 @@ $$
 | Variable | Symbol   | Description                | Unit |
 | -------- | -------- | -------------------------- | ---- |
 | $VS_{l}$ | `VFS(L)` | Installed capacity of link | GW   |
-| $VR_{l}$ | `VFR(L)` | New installation of link   | GW   |
+| $VR_{l}$ | `VFR(L)` | New installation of link   | GW/yr   |
 
 </details>
 
@@ -643,7 +643,7 @@ $$
 | Variable     | Symbol       | Description                          | Unit |
 | ------------ | ------------ | ------------------------------------ | ---- |
 | $VS_{n,i,s}$ | `VES(N,I,S)` | Installed energy capacity of storage | GWh  |
-| $VR_{n,i,s}$ | `VER(N,I,S)` | New installation of storage          | GWh  |
+| $VR_{n,i,s}$ | `VER(N,I,S)` | New installation of storage          | GWh/yr  |
 
 </details>
 
@@ -719,7 +719,7 @@ where $ISL_l$ is the set of storage technology instances ${n,i,s}$ related to li
 
 ## Nodal power balance
 
-The nodal power balance is the central constraint that ties together all operation variables: generator output, storage charge/discharge, and link flows must collectively meet exogenous demand at every node and timeslice group. Generator output ${VX}_{n,i,r,t}$, storage power ${VX}_{n,i,s,t}$, and net link contributions are aggregated on the left-hand side and matched to exogenous demand ${d}_{n,i,MT}$ and slack $\delta_{n,i,MT}$ on the right-hand side. The slack variable $\delta_{n,i,MT}$ is bounded above by `res_npb_up(N,I,MT)` and allows a controlled degree of unmet demand when the model is infeasible.
+The nodal power balance is the central constraint that ties together all operation variables: generator output, storage charge/discharge, and link flows must collectively meet exogenous demand at every node and timeslice group. Generator output ${VX}_{n,i,r,t}$, storage power ${VX}_{n,i,s,t}$, and net link contributions are aggregated on the left-hand side and matched to exogenous demand ${d}_{n,i,MT}$ and slack $\delta_{n,i,MT}$ on the right-hand side. Because the slack $\delta_{n,i,MT} \ge 0$ sits on the **demand side** (supply $= d + \delta$), it absorbs **excess supply** — a free-disposal valve, *not* unmet-demand relief. Its upper bound `res_npb_up(N,I,MT)` is $\approx 0$ (`eps`) almost everywhere, pinning supply to demand, and is raised to $+\infty$ only on oversupply-allowed buses (the GAMS `I_OS` hook, e.g. heat dumping).
 
 $$
 \sum_{r}\sum_{t\in MT}{VX}_{n,i,r,t}+\sum_{s}\sum_{t\in MT}{VX}_{n,i,s,t}
@@ -730,7 +730,7 @@ $$
 = {d}_{n,i,MT}+\delta_{n,i,MT}
 $$
 
-On the left-hand side, $\sum_{r}\sum_{t\in MT}{VX}_{n,i,r,t}$ aggregates generator output, $\sum_{s}\sum_{t\in MT}{VX}_{n,i,s,t}$ aggregates storage discharge and charge power, and the incidence-weighted link terms represent net imports and exports via links. On the right-hand side, exogenous demand ${d}_{n,i,MT}$ is balanced by slack $\delta_{n,i,MT}$ when residual imbalance is allowed.
+On the left-hand side, $\sum_{r}\sum_{t\in MT}{VX}_{n,i,r,t}$ aggregates generator output, $\sum_{s}\sum_{t\in MT}{VX}_{n,i,s,t}$ aggregates storage discharge and charge power, and the incidence-weighted link terms represent net imports and exports via links. On the right-hand side, supply equals exogenous demand ${d}_{n,i,MT}$ plus the disposal slack $\delta_{n,i,MT}$, so any oversupply is absorbed by $\delta$ where its bound permits.
 
 <details markdown="1">
 <summary><b>Parameters used in Nodal power balance</b></summary>
@@ -862,19 +862,19 @@ and analogously for links and storage.
 | Variable                        | Symbol             | Description                          | Unit |
 | ------------------------------- | ------------------ | ------------------------------------ | ---- |
 | $VS_{n,i,r}$                    | `VGS(N,I,R)`       | Installed capacity of generator      | GW   |
-| $VR_{n,i,r}$                    | `VGR(N,I,R)`       | New installation of generator        | GW   |
+| $VR_{n,i,r}$                    | `VGR(N,I,R)`       | New installation of generator        | GW/yr   |
 | $VC_{n,i,r_0,r_1,y}$            | `VGC(N,I,R0,R1,Y)` | Generator retrofit volume            | GW   |
-| $VP_{n,i,r}$                    | `VGP(N,I,R)`       | Replacement capacity of generator    | GW   |
+| $VP_{n,i,r}$                    | `VGP(N,I,R)`       | Replacement capacity of generator    | GW/yr   |
 | $\delta^{\text{stock}}_{n,i,r}$ | `RES_GSCB(N,I,R)`  | Generator stock-balance slack        | GW   |
 | $VS_{l}$                        | `VFS(L)`           | Installed capacity of link           | GW   |
-| $VR_{l}$                        | `VFR(L)`           | New installation of link             | GW   |
+| $VR_{l}$                        | `VFR(L)`           | New installation of link             | GW/yr   |
 | $VC_{l_0,l_1,y}$                | `VFC(L0,L1,Y)`     | Link retrofit volume                 | GW   |
-| $VP_{l}$                        | `VFP(L)`           | Replacement capacity of link         | GW   |
+| $VP_{l}$                        | `VFP(L)`           | Replacement capacity of link         | GW/yr   |
 | $\delta^{\text{stock}}_{l}$     | `RES_FSCB(L)`      | Link stock-balance slack             | GW   |
 | $VS_{n,i,s}$                    | `VES(N,I,S)`       | Installed energy capacity of storage | GWh  |
-| $VR_{n,i,s}$                    | `VER(N,I,S)`       | New installation of storage          | GWh  |
+| $VR_{n,i,s}$                    | `VER(N,I,S)`       | New installation of storage          | GWh/yr  |
 | $VC_{n,i,s_0,s_1,y}$            | `VEC(N,I,S0,S1,Y)` | Storage retrofit volume              | GWh  |
-| $VP_{n,i,s}$                    | `VEP(N,I,S)`       | Replacement capacity of storage      | GWh  |
+| $VP_{n,i,s}$                    | `VEP(N,I,S)`       | Replacement capacity of storage      | GWh/yr  |
 | $\delta^{\text{stock}}_{n,i,s}$ | `RES_ESCB(N,I,S)`  | Storage stock-balance slack          | GWh  |
 
 </details>
