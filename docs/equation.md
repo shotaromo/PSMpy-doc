@@ -12,6 +12,11 @@ icon: material/draw-pen
     (carry-over rounding, demand-profile normalization, exhaustible-resource cap
     handling, …) are registered in the model repo's `docs/spec/deviations.md`.
 
+    The GAMS solving domains used below map to PSMpy's authoring **element
+    types**: generator `R`/`g*` → **Source**, link `L`/`f*` →
+    **Transmission**/**Conversion**, storage `S`/`e*` → **Storage**, demand →
+    **Sink** (ADR-0008). The equations keep the GAMS `R`/`L`/`S` terms.
+
 !!! note "Notation conventions"
     Here, capital characters refer to endogenous variables, while lowercase characters indicate exogenous parameters.
 

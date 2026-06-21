@@ -11,6 +11,11 @@ icon: material/draw-pen
     丸め・需要プロファイル正規化・枯渇性資源キャップ処理など）はモデルリポジトリの
     `docs/spec/deviations.md` に登録されています。
 
+    以下で使う GAMS solving ドメインは PSMpy の authoring **要素型**に対応します：
+    発電機 `R`/`g*` → **Source**、リンク `L`/`f*` → **Transmission**・**Conversion**、
+    蓄電 `S`/`e*` → **Storage**、需要 → **Sink**（ADR-0008）。式は GAMS の `R`/`L`/`S`
+    表記を保持します。
+
 !!! note "表記規則"
     本文書では、大文字は内生変数（決定変数）を、小文字は外生パラメータを表します。
 
