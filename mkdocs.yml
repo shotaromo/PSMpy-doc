@@ -1,4 +1,4 @@
-site_name: PSMpy
+site_name: PSMpy v0.1
 site_url: https://shotaromo.github.io/PSMpy-doc/
 site_description: A Pythonic rebuild of the GAMS PowerSystemModel as a GAMSpy model.
 
@@ -44,7 +44,10 @@ theme:
 nav:
   - Home: index.md
   - User guide: user_guide.md
+  - Model structure: structure.md
   - Equations: equation.md
+  - Model data: data.md
+  - Appendix: appendix.md
 
 extra:
   social:
@@ -100,4 +103,7 @@ plugins:
           nav_translations:
             Home: ホーム
             User guide: ユーザーガイド
+            Model structure: モデル構造
             Equations: 式体系
+            Model data: モデルデータ
+            Appendix: 付録
