@@ -11,21 +11,32 @@ icon: material/sitemap
     element types **Source / Conversion / Transmission / Storage / Sink**, built
     data-first (ADR-0003 / ADR-0008).
 
-PSMpy v0.1 represents an energy system as a network of **nodes** ($n \in N$) and **sectors** ($i \in I$). Three technology types connect or serve these node-sector pairs: **generators**, **links**, and **storage**.
+PSMpy v0.1 represents an energy system as a network of **nodes** ($n \in N$) and **sectors** ($i \in I$). Its fixed **element types** — **Source**, **Conversion**, **Transmission**, **Storage**, and **Sink** (demand) — connect or serve these node-sector pairs (ADR-0008). They map onto the GAMS solving domains the equations use: generators ($r \in R$, `g*`), links ($l \in L$, `f*`), and storage ($s \in S$, `e*`).
 
-## Technology components
+## Element types
 
-### Generators
+!!! note "Authoring names vs GAMS/solving names"
+    The authoring & reporting layers speak the **element types** below; the
+    solving layer (and the [Equations](equation.md) page) keeps the GAMS
+    domains/symbols `R`/`L`/`S` and `g*`/`f*`/`e*` 1:1. Mapping: **Source** ↔
+    generator `R`/`g*`; **Transmission** & **Conversion** ↔ link `L`/`f*`;
+    **Storage** ↔ `S`/`e*`; **Sink** ↔ demand `dmd`.
 
-Generators ($r \in R$) produce energy within a node-sector pair $(n,i)$. Their dispatch $VX_{n,i,r,t}$ is bounded by installed capacity $VS_{n,i,r}$ and time-dependent availability coefficients. Generator output feeds the nodal power balance and—via carrier efficiency coefficients $\eta_{n,i,r,k}$—the energy supply variable $VP_{n,i,k}$ used in emission accounting.
+### Source — GAMS generator ($r \in R$, `g*`)
 
-### Links
+A **Source** produces energy within a node-sector pair $(n,i)$. Its dispatch $VX_{n,i,r,t}$ is bounded by installed capacity $VS_{n,i,r}$ and time-dependent availability coefficients. Source output feeds the nodal power balance and — via carrier coefficients $\eta_{n,i,r,k}$ (`geta`) — the energy supply variable $VP_{n,i,k}$ used in emission accounting. A *consuming* Source (dispatch $\le 0$) represents a fuel draw.
 
-Links ($l \in L$) transfer or convert energy between node-sector pairs. Separate forward and backward flow variables ($VX^+_{l,t}$, $VX^-_{l,t}$) allow asymmetric efficiency and directional constraints. The same formulation covers unidirectional devices (e.g., electrolysers) and bidirectional devices (e.g., grid interconnectors).
+### Transmission & Conversion — GAMS link ($l \in L$, `f*`)
 
-### Storage
+The GAMS *link* domain is authored as **two** PSMpy element types over one solving class: **Transmission** (bilateral, same-carrier transfer between node-sector pairs) and **Conversion** (a signed multi-output device, e.g. an electrolyser). Separate forward/backward flow variables ($VX^+_{l,t}$, $VX^-_{l,t}$) allow asymmetric efficiency and directional constraints; the port coefficients (`feta`, `kff`/`kbf`) carry the efficiency / multi-output structure.
 
-Storage ($s \in S$) couples dispatch across timeslices through the state-of-charge variable $VE_{n,i,s,t}$. Charge/discharge power $VX_{n,i,s,t}$ enters the nodal power balance, while energy capacity $VS_{n,i,s}$ is tracked separately. A capacity ratio parameter $\chi$ links the power capacity of an associated link (e.g., pump/turbine) to the energy capacity of the reservoir.
+### Storage — GAMS storage ($s \in S$, `e*`)
+
+A **Storage** couples dispatch across timeslices through the state-of-charge variable $VE_{n,i,s,t}$. Charge/discharge power $VX_{n,i,s,t}$ enters the nodal power balance, while energy capacity $VS_{n,i,s}$ is tracked separately. A capacity-ratio parameter $\chi$ links the power capacity of an associated link (pump/turbine) to the reservoir's energy capacity.
+
+### Sink — boundary demand (`dmd`)
+
+A **Sink** is the exogenous demand on a bus; it is not an investable asset. Service/energy demand is satisfied by the elements above through the nodal power balance.
 
 ## Temporal structure
 
@@ -38,7 +49,7 @@ Timeslice weight $\omega$ (hours) converts power to energy in annual sums; granu
 
 ## Technology stock
 
-All three technology types share the same stock accounting structure. Installed capacity $VS$ is composed of new investment $VR$, replacement $VP$, surviving vintage stock $sc$ (exogenous), retrofit flows $VC$, and a stock-balance slack $\delta^{\text{stock}}$:
+**Source**, **Transmission**/**Conversion**, and **Storage** share the same stock-accounting structure — generated once by a single generic stock block instantiated per element type (ADR-0001). Installed capacity $VS$ is composed of new investment $VR$, replacement $VP$, surviving vintage stock $sc$ (exogenous), retrofit flows $VC$, and a stock-balance slack $\delta^{\text{stock}}$:
 
 $$VS = (VR + VP) \cdot \Delta y + \sum_y \!\left( sc_y + \sum_{\text{retrofit in}} VC - \sum_{\text{retrofit out}} VC \right) - \delta^{\text{stock}}$$
 
@@ -58,7 +69,7 @@ Capital costs ($C^{\text{CAPEX}}$) cover new installation, retrofit, and replace
 
 ## Central constraint
 
-The **nodal power balance** ties all components together. For each node-sector pair $(n,i)$ and timeslice group $m_t \in MT$, total generation, storage discharge, and net link imports must equal exogenous demand $d_{n,i,MT}$:
+The **nodal power balance** ties all elements together. For each node-sector pair $(n,i)$ and timeslice group $m_t \in MT$, total Source output, Storage discharge, and net Transmission/Conversion flows must equal exogenous demand $d_{n,i,MT}$ (plus the disposal slack $\delta_{n,i,MT}$):
 
 $$\sum_r \sum_{t \in MT} VX_{n,i,r,t} + \sum_s \sum_{t \in MT} VX_{n,i,s,t} + \text{(net link flows)} = d_{n,i,MT} + \delta_{n,i,MT}$$
 

@@ -113,8 +113,8 @@ icon: material/book-open-outline
 | $sr_{n,i,r}$ | `gssr(N,I,R)` | 更新可能ストック | GW |
 | $\lambda^{\min}_{n,i,r}$ | `gsmn(N,I,R)` | 設置済み容量の下限 | GW |
 | $\lambda^{\max}_{n,i,r}$ | `gsmx(N,I,R)` | 設置済み容量の上限 | GW |
-| $\nu^{\min}_{n,i,r}$ | `grmn(N,I,R)` | 年間新設容量の下限 | GW |
-| $\nu^{\max}_{n,i,r}$ | `grmx(N,I,R)` | 年間新設容量の上限 | GW |
+| $\nu^{\min}_{n,i,r}$ | `grmn(N,I,R)` | 年間新設容量の下限 | GW/yr |
+| $\nu^{\max}_{n,i,r}$ | `grmx(N,I,R)` | 年間新設容量の上限 | GW/yr |
 | $\mu^{\min}_{n,i,r_0,r_1}$ | `gcmn(N,I,R,R)` | 累積レトロフィット量の下限 | GW |
 | $\mu^{\max}_{n,i,r_0,r_1}$ | `gcmx(N,I,R,R)` | 累積レトロフィット量の上限 | GW |
 | $\theta^{\min}_{m_x,m_{r0},m_{r1}}$ | `gmmn(MX,MR,MR)` | 最小発電シェア | – |
@@ -149,8 +149,8 @@ icon: material/book-open-outline
 | $sr_{l}$ | `fssr(L)` | 更新可能ストック | GW |
 | $\lambda^{\min}_{l}$ | `fsmn(L)` | 設置済み容量の下限 | GW |
 | $\lambda^{\max}_{l}$ | `fsmx(L)` | 設置済み容量の上限 | GW |
-| $\nu^{\min}_{l}$ | `frmn(L)` | 年間新設容量の下限 | GW |
-| $\nu^{\max}_{l}$ | `frmx(L)` | 年間新設容量の上限 | GW |
+| $\nu^{\min}_{l}$ | `frmn(L)` | 年間新設容量の下限 | GW/yr |
+| $\nu^{\max}_{l}$ | `frmx(L)` | 年間新設容量の上限 | GW/yr |
 | $\theta^{\min}_{m_x,m_{l0},m_{l1}}$ | `fmmn(MX,ML,ML)` | 最小リンクシェア | – |
 | $\theta^{\max}_{m_x,m_{l0},m_{l1}}$ | `fmmx(MX,ML,ML)` | 最大リンクシェア | – |
 | $\theta^{\text{fix}}_{m_x,m_{l0},m_{l1}}$ | `fmfx(MX,ML,ML)` | 固定リンクシェア | – |
@@ -176,8 +176,8 @@ icon: material/book-open-outline
 | $sr_{n,i,s}$ | `essr(N,I,S)` | 更新可能ストック | GWh |
 | $\lambda^{\min}_{n,i,s}$ | `esmn(N,I,S)` | 設置済みエネルギー容量の下限 | GWh |
 | $\lambda^{\max}_{n,i,s}$ | `esmx(N,I,S)` | 設置済みエネルギー容量の上限 | GWh |
-| $\nu^{\min}_{n,i,s}$ | `ermn(N,I,S)` | 年間新設容量の下限 | GWh |
-| $\nu^{\max}_{n,i,s}$ | `ermx(N,I,S)` | 年間新設容量の上限 | GWh |
+| $\nu^{\min}_{n,i,s}$ | `ermn(N,I,S)` | 年間新設容量の下限 | GWh/yr |
+| $\nu^{\max}_{n,i,s}$ | `ermx(N,I,S)` | 年間新設容量の上限 | GWh/yr |
 | $\mu^{\min}_{n,i,s_0,s_1}$ | `ecmn(N,I,S,S)` | 累積レトロフィット量の下限 | GWh |
 | $\mu^{\max}_{n,i,s_0,s_1}$ | `ecmx(N,I,S,S)` | 累積レトロフィット量の上限 | GWh |
 
