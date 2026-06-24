@@ -6,8 +6,9 @@ install it, author an input dataset, validate, compile, solve, and report.
 
 > Scope today: the first vertical slice is **global2050 · Japan · `power`**
 > (ADR-0007). The authoring/solving/reporting layers and a toy ladder are on
-> `main`; the real Japan run is HPC-gated (`docs/STATUS.md`). There is **no
-> unified solve CLI yet** — solving is driven through the Python API below.
+> `main`; the real Japan run is HPC-gated (`docs/STATUS.md`). The unified `psmpy`
+> CLI (`validate` / `sweep` / `extract` / `run`) covers the shell workflow; the
+> Python API below is the in-process equivalent (and what the CLI calls).
 
 ---
 
@@ -19,12 +20,15 @@ on the HPC — home directory only; see `CLAUDE.md`).
 ```bash
 uv sync                 # core deps (numpy / pandas / pyarrow / pyyaml)
 uv sync --extra solve   # ALSO install gamspy — needed to SOLVE (and to read a GDX)
-uv run pytest tests/    # test suite (solver tests auto-skip without a GAMS licence)
+uv sync --extra report  # ALSO install pyreport — needed for the IAMC report (§5)
+uv run pytest tests/    # test suite (solver / report tests auto-skip without their extra)
 ```
 
 - **Reading a GDX and solving need `gamspy`** (the `solve` extra). The package
   itself is free; *solving* uses your existing GAMS/solver licence (e.g. on the
   HPC). Authoring (load / validate / **compile**) needs neither.
+- **The IAMC report needs `pyreport`** (the `report` extra) — the shared Track P
+  reporting core, pure-pandas (no solver, no licence). See §5.
 - Everything runs **user-local** — no sudo, no system Python.
 
 ---
@@ -84,7 +88,23 @@ template; the closure for a `power` slice is:
 
 ## 4. Solving (needs `gamspy` + a GAMS licence)
 
-Two routes. High-level facade:
+**From the shell — `psmpy run`** (the usual way for a real dataset; forwards to
+`scripts/solve_case.py`, which owns the solve + writes the results):
+
+```bash
+uv run --extra solve psmpy run \
+    --dataset datasets/japan_power \
+    --case runs/japan_power_300C \
+    --years 2020:2050:5            # start:stop:step
+    # --report                     # also emit the IAMC layer (§5; needs --extra report)
+```
+
+It validates → compiles → solves the myopic loop, writing `runs/<case>/solve/
+<year>/*.parquet` (the solved levels), `state/<year>/` (carry-over), and
+`summary.json`. `psmpy run --help` lists the solver knobs (`--solver`,
+`--crossover`, `--threads`, …). `--dry-run` stops after compile (no licence).
+
+**From Python** — two routes. High-level facade:
 
 ```python
 from psmpy.runtime.loop import RunOptions
@@ -121,30 +141,64 @@ result = run_case(
 
 ---
 
-## 5. Reporting
+## 5. Reporting — the IAMC layer (needs the `report` extra)
 
-Solved results convert to Track P **Report-schema** frames via the reporting
-adapter (reuses the pure-pandas Track P core — no gamspy). `to_report` needs
-three inputs — the `RunResult`, the **IR** (for the bus decode + region
-hierarchy) and the compiled **`SymbolFrames`** — so use the explicit route
-where `sf` is in scope:
+PSMpy **reuses the shared Track P reporting core** (the `pyreport` package) rather
+than re-implementing report math — "one core, two adapters" (`docs/spec/
+postprocess.md` §4): `io_gdx` is the GAMS-side adapter, `psmpy.reporting.report` is
+the PSMpy-side one. It is pure-pandas (no gamspy, no licence); install it with
+`uv sync --extra report`.
+
+**Turnkey — `psmpy run --report`.** The simplest path: add `--report` to the solve
+(§4). After the solve it feeds the in-memory result through the shared core and writes
+the wide IAMC table to `runs/<case>/report/iamc/<case>.csv`:
+
+```bash
+uv run --extra solve --extra report psmpy run \
+    --dataset datasets/japan_power --case runs/japan_power_300C --report
+```
+
+The emit is non-fatal — a missing `report` extra (or any reporting error) is logged,
+never aborts a solve whose results are already on disk.
+
+**From Python — in-process.** `from_solution` turns a live `RunResult` into the IAMC
+long frame via the shared core; `write_iamc` writes the wide CSV:
 
 ```python
 from psmpy.runtime.loop import run_case
-from psmpy.reporting.adapter import to_report, write_report
+from psmpy.reporting import from_solution, write_iamc
 
 sf = model.compile()
 result = run_case(sf, years=[2030, 2035], t_int=5, start_year=2030, case_dir="runs/toy")
 
-frames = to_report(result, model._ir(), sf)   # RunResult + IR + SymbolFrames -> frames
-write_report(frames, "reports/toy")            # parquet, consumed by tools/pyreport
+iamc = from_solution(result, model._ir(), sf)   # -> IAMC long [var, region, year, value, label, unit]
+write_iamc(iamc, "runs/toy", scenario="toy")     # -> runs/toy/report/iamc/toy.csv (wide pyam layout)
 ```
 
-`model._ir()` is the current IR accessor (a public reporting facade is a natural
-future addition). See `src/psmpy/reporting/adapter.py` for the exact signature
-and `docs/spec/postprocess.md` for the quantity catalog and IAMC export; the
-`tools/pyreport/` package (in `PowerSystemModel-master`) turns these frames into
-tables / IAMC / plots.
+**Post-hoc — `from_run_dir`.** Reproduce the IAMC from a solved case already on disk
+(reads `runs/<case>/solve/<year>/*.parquet` + recompiles from the dataset — **no
+re-solve, no licence**):
+
+```python
+from psmpy.reporting import from_run_dir
+iamc = from_run_dir("runs/japan_power_300C", "datasets/japan_power")
+```
+
+**What's reported today.** The families that carry data: **capacity**,
+**capacity_addition**, **emission**, and **energy_use / carbon_capture / Primary
+Energy** (the last for the mapped `P_*` primary-supply carriers). `capex` is emitted
+but ~0 (cost params pending); `generation` is computed but is an intermediate, not an
+IAMC variable. The per-slice **dispatch** families (supply / withdrawal / losses /
+curtailment) are deferred behind the HPC parity gate — they are the parity-sensitive
+Phase-1b quantities (`docs/STATUS.md`). Plots / dashboard reuse `pyreport`'s plot CLI
+on the merged IAMC (a follow-up).
+
+> A decoupled alternative — `psmpy.reporting.to_report` / `write_report` write the raw
+> Report-schema frames to parquet for a SEPARATE `pyreport` process (no `pyreport`
+> import); use it only when the two repos must stay process-decoupled.
+
+`model._ir()` is the current IR accessor. See `src/psmpy/reporting/report.py` and
+`docs/spec/postprocess.md` (the quantity catalog + IAMC export).
 
 ---
 
@@ -155,7 +209,7 @@ To produce the canonical tables from the reference GAMS input GDX (needs
 
 ```bash
 # one step (anywhere with the GDX + gamspy):
-uv run --extra solve python -m psmpy.extract.run_extract \
+uv run --extra solve psmpy extract gams \
     --gdx path/to/input/300C.gdx --out datasets/japan_power --format parquet
 ```
 
@@ -170,15 +224,22 @@ synthetic symbol dicts (no real GDX). See `docs/STATUS.md` (M0) and
 
 ## 7. Command reference
 
+The unified `psmpy` CLI (prefix with `uv run`; add `--extra solve` for
+`run`/`extract`, `--extra report` for `run --report`):
+
 | Command | Purpose |
 | --- | --- |
-| `uv run pytest tests/` | full suite (solver tests auto-skip without a licence) |
+| `psmpy validate <dataset>` | load + validation tiers 1–3 (no solver); exit 2 on errors |
+| `psmpy sweep <sweep.yaml> --dataset <dir> --out <dir>` | expand a sweep into N case dirs (no solver) |
+| `psmpy extract gams --gdx <GDX> --out <dir>` | GDX → canonical dataset (needs `--extra solve`) |
+| `psmpy run --dataset <dir> --case <dir> [--report]` | solve myopically, optionally emit IAMC (§4–5; `psmpy run --help` for solver knobs) |
+| `uv run pytest tests/` | full suite (solver / report tests auto-skip without their extra) |
 | `uv run python -m psmpy.units --dump [--out PATH]` | emit the canonical unit-token contract (JSON) |
-| `uv run --extra solve python -m psmpy.extract.run_extract --gdx GDX --out DIR` | GDX → canonical dataset |
 
-There is **no `psmpy solve` CLI yet** — drive solving from Python (§4). The
-five-category scenario config + overlays (M3) exist as an API
-(`docs/spec/scenario.md`); a CLI surface is future work.
+`psmpy run` forwards to `scripts/solve_case.py` — the solve needs the GAMS licence,
+so it is intentionally outside the importable package API. The five-category
+scenario config + overlays (M3, `docs/spec/scenario.md`) drive `sweep`; a richer
+scenario CLI surface is future work.
 
 ---
 
