@@ -1,4 +1,4 @@
-site_name: PSMpy v0.1
+site_name: PSMpy v0.5
 site_url: https://shotaromo.github.io/PSMpy-doc/
 site_description: A Pythonic rebuild of the GAMS PowerSystemModel as a GAMSpy model.
 

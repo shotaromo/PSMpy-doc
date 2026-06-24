@@ -4,7 +4,7 @@ icon: material/home
 
 # PSMpy
 
-**PSMpy v0.1** は GAMS の `PowerSystemModel` を [GAMSpy](https://gamspy.readthedocs.io/)
+**PSMpy v0.5** は GAMS の `PowerSystemModel` を [GAMSpy](https://gamspy.readthedocs.io/)
 モデルとして再構築した Python 実装です — エネルギーシステムの容量拡張・運用最適化
 を行う多年度線形計画モデル。エネルギーシステムは固定された物理要素型 — **Source /
 Conversion / Transmission / Storage**（＋需要の **Sink**）— で表現し、空間スコープ・
