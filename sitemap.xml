@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/appendix/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/appendix/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/appendix/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/data/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/data/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/data/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/equation/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/equation/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/equation/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/structure/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/structure/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/structure/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/user_guide/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/user_guide/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/user_guide/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/appendix/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/appendix/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/appendix/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/data/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/data/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/data/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/equation/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/equation/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/equation/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/structure/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/structure/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/structure/"/>
+    </url>
+    <url>
+        <loc>https://shotaromo.github.io/PSMpy-doc/ja/user_guide/</loc>
+        <lastmod>2026-06-24</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="https://shotaromo.github.io/PSMpy-doc/ja/user_guide/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://shotaromo.github.io/PSMpy-doc/user_guide/"/>
+    </url>
+</urlset>
